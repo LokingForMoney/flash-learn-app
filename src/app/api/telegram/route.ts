@@ -89,6 +89,59 @@
 //       return NextResponse.json({ ok: false }, { status: 500 });
 //   }
 // }
+// import TelegramBot from 'node-telegram-bot-api';
+// import { NextResponse } from 'next/server';
+// import { flashcards } from '@/lib/flashcardService';
+
+// const token = process.env.TELEGRAM_BOT_TOKEN!;
+// const webAppUrl = 'https://flashclearn.netlify.app/';
+
+// const bot = new TelegramBot(token);
+
+// export async function POST(req: Request) {
+//   try {
+//     console.log('Получен запрос');
+//     const update = await req.json();
+//     console.log('Тело запроса:', JSON.stringify(update));
+    
+//     if (update.message) {
+//       console.log('Получено сообщение:', update.message.text);
+//       const chatId = update.message.chat.id;
+//       const text = update.message.text;
+
+//       if (text === '/start') {
+//         console.log('Отправка приветственного сообщения');
+//         await bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
+//           reply_markup: {
+//             inline_keyboard: [
+//               [{
+//                 text: 'Открыть веб-приложение',
+//                 url: webAppUrl
+//               }]
+//             ]
+//           }
+//         });
+//       }
+
+//       const createMatch = text.match(/\/create (.+)/);
+//       if (createMatch) {
+//         const [question, answer] = createMatch[1].split('|');
+        
+//         if (question && answer) {
+//           flashcards.push({ question, answer });
+//           await bot.sendMessage(chatId, 'Флеш-карточка создана!');
+//         } else {
+//           await bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
+//         }
+//       }
+//     }
+    
+//     return NextResponse.json({ ok: true });
+//   } catch (error) {
+//     console.log('Ошибка:', error);
+//     return NextResponse.json({ ok: false }, { status: 500 });
+//   }
+// }
 import TelegramBot from 'node-telegram-bot-api';
 import { NextResponse } from 'next/server';
 import { flashcards } from '@/lib/flashcardService';
@@ -96,49 +149,25 @@ import { flashcards } from '@/lib/flashcardService';
 const token = process.env.TELEGRAM_BOT_TOKEN!;
 const webAppUrl = 'https://flashclearn.netlify.app/';
 
-const bot = new TelegramBot(token);
+// Инициализируем бота с правильными настройками для webhook
+const bot = new TelegramBot(token, { webHook: true });
 
 export async function POST(req: Request) {
   try {
-    console.log('Получен запрос');
+    console.log('=== НАЧАЛО ОБРАБОТКИ WEBHOOK ===');
     const update = await req.json();
-    console.log('Тело запроса:', JSON.stringify(update));
-    
+    console.log('ДАННЫЕ:', JSON.stringify(update, null, 2));
+
     if (update.message) {
-      console.log('Получено сообщение:', update.message.text);
       const chatId = update.message.chat.id;
-      const text = update.message.text;
-
-      if (text === '/start') {
-        console.log('Отправка приветственного сообщения');
-        await bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
-          reply_markup: {
-            inline_keyboard: [
-              [{
-                text: 'Открыть веб-приложение',
-                url: webAppUrl
-              }]
-            ]
-          }
-        });
-      }
-
-      const createMatch = text.match(/\/create (.+)/);
-      if (createMatch) {
-        const [question, answer] = createMatch[1].split('|');
-        
-        if (question && answer) {
-          flashcards.push({ question, answer });
-          await bot.sendMessage(chatId, 'Флеш-карточка создана!');
-        } else {
-          await bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
-        }
-      }
+      console.log('CHAT ID:', chatId);
+      
+      await bot.sendMessage(chatId, 'Тестовое сообщение');
     }
-    
+
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.log('Ошибка:', error);
+    console.log('ОШИБКА:', error);
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 }
