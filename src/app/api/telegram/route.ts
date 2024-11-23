@@ -133,10 +133,10 @@ bot.onText(/\/create (.+)/, (msg, match) => {
 export async function POST(req: Request) {
   try {
     const update = await req.json();
-    await bot.handleUpdate(update);
+    // Вместо handleUpdate используем emit для обработки обновления
+    bot.emit('message', update.message);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('Error processing update:', error);
     return NextResponse.json({ ok: false }, { status: 500 });
   }
-}
