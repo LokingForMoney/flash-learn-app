@@ -30,24 +30,75 @@
 //   // Здесь можно обрабатывать POST запросы, если нужно
 //   return NextResponse.json({ message: 'Telegram bot is running' });
 // }
+// import TelegramBot from 'node-telegram-bot-api';
+// import { NextResponse } from 'next/server';
+// import { flashcards } from '@/lib/flashcardService';
+// const token = process.env.TELEGRAM_BOT_TOKEN!;
+// // const webAppUrl = process.env.NEXT_PUBLIC_WEBAPP_URL!;
+// const webAppUrl = 'https://flashclearn.netlify.app/2';
+// const bot = new TelegramBot(token, { polling: true });
+
+// // bot.onText(/\/start/, (msg) => {
+// //   const chatId = msg.chat.id;
+// //   bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
+// //     reply_markup: {
+// //       inline_keyboard: [
+// //         [{ text: 'Открыть веб-приложение', web_app: { url: webAppUrl } }]
+// //       ]
+// //     }
+// //   });
+// // });
+// bot.onText(/\/start/, (msg) => {
+//     const chatId = msg.chat.id;
+//     bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
+//       reply_markup: {
+//         inline_keyboard: [
+//           [{
+//             text: 'Открыть веб-приложение',
+//             url: webAppUrl
+//           }]
+//         ]
+//       }
+//     });
+//   });
+// bot.onText(/\/create (.+)/, (msg, match) => {
+//   const chatId = msg.chat.id;
+//   if (match && match[1]) {
+//     const text = match[1];
+//     const [question, answer] = text.split('|');
+
+//     if (question && answer) {
+//       flashcards.push({ question, answer });
+//       bot.sendMessage(chatId, 'Флеш-карточка создана!');
+//     } else {
+//       bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
+//     }
+//   } else {
+//     bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
+//   }
+// });
+
+// export async function POST(req: Request) {
+//   try {
+//       const update = await req.json();
+//       // Обрабатываем входящее обновление
+//       await bot.handleUpdate(update);
+//       return NextResponse.json({ ok: true });
+//   } catch (error) {
+//       console.error('Error processing update:', error);
+//       return NextResponse.json({ ok: false }, { status: 500 });
+//   }
+// }
 import TelegramBot from 'node-telegram-bot-api';
 import { NextResponse } from 'next/server';
 import { flashcards } from '@/lib/flashcardService';
-const token = process.env.TELEGRAM_BOT_TOKEN!;
-// const webAppUrl = process.env.NEXT_PUBLIC_WEBAPP_URL!;
-const webAppUrl = 'https://flashclearn.netlify.app/2';
-const bot = new TelegramBot(token, { polling: true });
 
-// bot.onText(/\/start/, (msg) => {
-//   const chatId = msg.chat.id;
-//   bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
-//     reply_markup: {
-//       inline_keyboard: [
-//         [{ text: 'Открыть веб-приложение', web_app: { url: webAppUrl } }]
-//       ]
-//     }
-//   });
-// });
+const token = process.env.TELEGRAM_BOT_TOKEN!;
+const webAppUrl = 'https://flashclearn.netlify.app/2';
+
+// Изменяем инициализацию бота для работы с webhook
+const bot = new TelegramBot(token, { webHook: { port: 443 } });
+
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
     bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
@@ -60,7 +111,8 @@ bot.onText(/\/start/, (msg) => {
         ]
       }
     });
-  });
+});
+
 bot.onText(/\/create (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   if (match && match[1]) {
@@ -80,12 +132,11 @@ bot.onText(/\/create (.+)/, (msg, match) => {
 
 export async function POST(req: Request) {
   try {
-      const update = await req.json();
-      // Обрабатываем входящее обновление
-      await bot.handleUpdate(update);
-      return NextResponse.json({ ok: true });
+    const update = await req.json();
+    await bot.handleUpdate(update);
+    return NextResponse.json({ ok: true });
   } catch (error) {
-      console.error('Error processing update:', error);
-      return NextResponse.json({ ok: false }, { status: 500 });
+    console.error('Error processing update:', error);
+    return NextResponse.json({ ok: false }, { status: 500 });
   }
 }
