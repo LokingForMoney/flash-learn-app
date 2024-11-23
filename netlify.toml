@@ -1,12 +1,8 @@
 [build]
   command = "npm run build"
   publish = ".next"
-  functions = "api"
-
-[functions]
-  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/api/:splat"
   status = 200
