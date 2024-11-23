@@ -94,7 +94,7 @@ import { NextResponse } from 'next/server';
 import { flashcards } from '@/lib/flashcardService';
 
 const token = process.env.TELEGRAM_BOT_TOKEN!;
-const webAppUrl = 'https://flashclearn.netlify.app/2';
+const webAppUrl = 'https://flashclearn.netlify.app/';
 
 const bot = new TelegramBot(token);
 
