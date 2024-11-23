@@ -144,10 +144,10 @@
 // }
 import TelegramBot from 'node-telegram-bot-api';
 import { NextResponse } from 'next/server';
-import { flashcards } from '@/lib/flashcardService';
+// import { flashcards } from '@/lib/flashcardService';
 
 const token = process.env.TELEGRAM_BOT_TOKEN!;
-const webAppUrl = 'https://flashclearn.netlify.app/';
+// const webAppUrl = 'https://flashclearn.netlify.app/';
 
 // Инициализируем бота с правильными настройками для webhook
 const bot = new TelegramBot(token, { webHook: true });
