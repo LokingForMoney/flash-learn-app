@@ -63,18 +63,23 @@ bot.onText(/\/start/, (msg) => {
   });
 bot.onText(/\/create (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
-  const text = match[1];
-  const [question, answer] = text.split('|');
+  if (match && match[1]) {
+    const text = match[1];
+    const [question, answer] = text.split('|');
 
-  if (question && answer) {
-    flashcards.push({ question, answer });
-    bot.sendMessage(chatId, 'Флеш-карточка успешно создана!');
+    if (question && answer) {
+      flashcards.push({ question, answer });
+      bot.sendMessage(chatId, 'Флеш-карточка создана!');
+    } else {
+      bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
+    }
   } else {
-    bot.sendMessage(chatId, 'Используйте формат: /create вопрос|ответ');
+    bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
   }
 });
 
 export async function POST(req: Request) {
   const data = await req.json();
+  console.log(data);
   return NextResponse.json({ message: 'Telegram бот запущен' });
 }

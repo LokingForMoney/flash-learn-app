@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react';
 import { Flashcard } from '@/types/flashcard';
 import { fetchFlashcards } from '@/lib/flashcardService';
