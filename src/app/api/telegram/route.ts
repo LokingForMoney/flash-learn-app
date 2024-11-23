@@ -35,7 +35,7 @@ import { NextResponse } from 'next/server';
 import { flashcards } from '@/lib/flashcardService';
 const token = process.env.TELEGRAM_BOT_TOKEN!;
 // const webAppUrl = process.env.NEXT_PUBLIC_WEBAPP_URL!;
-const webAppUrl = 'https://flashclearn.netlify.app/';
+const webAppUrl = 'https://flashclearn.netlify.app/2';
 const bot = new TelegramBot(token, { polling: true });
 
 // bot.onText(/\/start/, (msg) => {
@@ -79,7 +79,13 @@ bot.onText(/\/create (.+)/, (msg, match) => {
 });
 
 export async function POST(req: Request) {
-  const data = await req.json();
-  console.log(data);
-  return NextResponse.json({ message: 'Telegram бот запущен' });
+  try {
+      const update = await req.json();
+      // Обрабатываем входящее обновление
+      await bot.handleUpdate(update);
+      return NextResponse.json({ ok: true });
+  } catch (error) {
+      console.error('Error processing update:', error);
+      return NextResponse.json({ ok: false }, { status: 500 });
+  }
 }
