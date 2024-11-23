@@ -100,14 +100,17 @@ const bot = new TelegramBot(token);
 
 export async function POST(req: Request) {
   try {
+    console.log('Получен запрос');
     const update = await req.json();
+    console.log('Тело запроса:', JSON.stringify(update));
     
     if (update.message) {
+      console.log('Получено сообщение:', update.message.text);
       const chatId = update.message.chat.id;
       const text = update.message.text;
 
-      // Обработка команды /start
       if (text === '/start') {
+        console.log('Отправка приветственного сообщения');
         await bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
           reply_markup: {
             inline_keyboard: [
@@ -120,7 +123,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Обработка команды /create
       const createMatch = text.match(/\/create (.+)/);
       if (createMatch) {
         const [question, answer] = createMatch[1].split('|');
@@ -136,8 +138,7 @@ export async function POST(req: Request) {
     
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error('Error processing update:', error);
+    console.log('Ошибка:', error);
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 }
- 
