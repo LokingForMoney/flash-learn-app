@@ -57,3 +57,18 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ ok: true });
 }
+bot.on('callback_query', async (callbackQuery) => {
+  // Проверяем, есть ли сообщение в callbackQuery
+  if (!callbackQuery.message) {
+    console.error('Ошибка: callbackQuery.message is undefined');
+    return; // Выходим, если message отсутствует
+  }
+
+  const chatId = callbackQuery.message.chat.id;
+  const callbackData = callbackQuery.data;
+
+  if (callbackData === 'start_game') {
+    await bot.sendMessage(chatId, 'Бот запущен! Теперь вы можете использовать команды.');
+    // Здесь вы можете добавить дополнительную логику или команды
+  }
+});
