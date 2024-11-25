@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       await bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn! Нажмите на кнопку ниже, чтобы открыть веб-приложение.', {
         reply_markup: {
           inline_keyboard: [[{
-            text: 'Открыть веб-приложение',
+            text: 'Открыть flashLearn',
             url: webAppUrl
           }], [{
             text: 'Запустить',
@@ -60,21 +60,13 @@ export async function POST(req: Request) {
       }
     }
   }
+  if (update.callback_query) {
+    const chatId = update.callback_query.message?.chat.id;
+    const callbackData = update.callback_query.data;
 
+    if (callbackData === 'start_game' && chatId) {
+      await bot.sendMessage(chatId, 'Бот запущен! Теперь вы можете использовать команды.');
+    }
+  }
   return NextResponse.json({ ok: true });
 }
-bot.on('callback_query', async (callbackQuery) => {
-  // Проверяем, есть ли сообщение в callbackQuery
-  if (!callbackQuery.message) {
-    console.error('Ошибка: callbackQuery.message is undefined');
-    return; // Выходим, если message отсутствует
-  }
-
-  const chatId = callbackQuery.message.chat.id;
-  const callbackData = callbackQuery.data;
-
-  if (callbackData === 'start_game') {
-    await bot.sendMessage(chatId, 'Бот запущен! Теперь вы можете использовать команды.');
-    // Здесь вы можете добавить дополнительную логику или команды
-  }
-});
