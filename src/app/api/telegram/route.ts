@@ -36,21 +36,27 @@ export async function POST(req: Request) {
     const text = update.message.text;
 
     if (text === '/start') {
-      await bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn!', {
+      await bot.sendMessage(chatId, 'Добро пожаловать в FlashLearn! Нажмите на кнопку ниже, чтобы открыть веб-приложение.', {
         reply_markup: {
           inline_keyboard: [[{
             text: 'Открыть веб-приложение',
             url: webAppUrl
+          }], [{
+            text: 'Запустить',
+            callback_data: 'start_game' // Используем callback_data для обработки нажатия кнопки
           }]]
         }
       });
     }
 
+    // Обработка создания флеш-карточки
     if (text.startsWith('/create')) {
       const [question, answer] = text.slice(8).split('|');
       if (question && answer) {
         flashcards.push({ question, answer });
         await bot.sendMessage(chatId, 'Флеш-карточка создана!');
+      } else {
+        await bot.sendMessage(chatId, 'Пожалуйста, используйте формат: /create вопрос|ответ');
       }
     }
   }
