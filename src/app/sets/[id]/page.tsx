@@ -1,14 +1,15 @@
 'use client'
-import { useState} from 'react'
+import { useState } from 'react'
 import { getFlashcardSet, addCardToSet } from '@/lib/flashcardSetService'
 import Image from 'next/image'
-interface PageProps {
+
+type Props = {
     params: {
-        id: string;
-    };
-    searchParams: { [key: string]: string | string[] | undefined };
+        id: string
+    }
 }
-export default function SetPage({ params }: PageProps) {
+
+export default function SetPage({ params }: Props) {
     const [set, setSet] = useState(getFlashcardSet(params.id))
     const [showForm, setShowForm] = useState(false)
     const [newCard, setNewCard] = useState({ word: '', translation: '' })
