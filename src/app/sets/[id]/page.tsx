@@ -2,24 +2,22 @@
 import { useState } from 'react'
 import { getFlashcardSet, addCardToSet } from '@/lib/flashcardSetService'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
-interface PageProps {
-    params: {
-        id: string;
-    };
-}
-
-export default function SetPage({ params }: PageProps) {
-    const [set, setSet] = useState(getFlashcardSet(params.id))
+export default function SetPage() {
+    const params = useParams()
+    const id = params?.id as string
+    
+    const [set, setSet] = useState(getFlashcardSet(id))
     const [showForm, setShowForm] = useState(false)
     const [newCard, setNewCard] = useState({ word: '', translation: '' })
 
     const handleAddCard = (e: React.FormEvent) => {
         e.preventDefault()
-        addCardToSet(params.id, newCard.word, newCard.translation)
+        addCardToSet(id, newCard.word, newCard.translation)
         setNewCard({ word: '', translation: '' })
         setShowForm(false)
-        setSet(getFlashcardSet(params.id))
+        setSet(getFlashcardSet(id))
     }
 
     return (
