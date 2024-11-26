@@ -7,10 +7,9 @@ interface PageProps {
     params: {
         id: string;
     };
-    searchParams: Record<string, string | string[] | undefined>;
 }
 
-export default function SetPage({ params, searchParams }: PageProps) {
+export default function SetPage({ params }: PageProps) {
     const [set, setSet] = useState(getFlashcardSet(params.id))
     const [showForm, setShowForm] = useState(false)
     const [newCard, setNewCard] = useState({ word: '', translation: '' })
