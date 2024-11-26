@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 import { getFlashcardSet, addCardToSet } from '@/lib/flashcardSetService'
 import Image from 'next/image'
 
