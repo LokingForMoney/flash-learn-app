@@ -248,8 +248,9 @@ export default function HomePage() {
   }
   
 
-    const handleEdit = (e: React.FormEvent) => {
-        e.preventDefault()
+  const handleEdit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (editingSet) {
         const updatedSets = editFlashcardSet(
             editingSet,
             editForm.title,
@@ -259,6 +260,8 @@ export default function HomePage() {
         setSets(updatedSets)
         setEditingSet(null)
     }
+}
+
 
     return (
         <main className="min-h-[100vh] w-full bg-gradient-to-b from-blue-700 via-blue-500 to-sky-400 p-4">
