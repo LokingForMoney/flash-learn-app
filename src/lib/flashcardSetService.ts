@@ -70,40 +70,56 @@ export const getFlashcardSets = () => {
 };
 // Добавляем поддержку аудио в функцию addCardToSet
 export const addCardToSet = (
-    setId: string, 
-    word: string, 
-    translation: string, 
+    setId: string,
+    word: string,
+    translation: string,
     image: File | null,
     audio: Blob | null
-) => {
+): Card => {
     const set = sets.find(set => set.id === setId);
-    if (set) {
-        const cardId = Date.now().toString();
-        const imageUrl = image ? URL.createObjectURL(image) : undefined;
-        const audioUrl = audio ? URL.createObjectURL(audio) : undefined;
-        
-        const newCard = { 
-            id: cardId, 
-            word, 
-            translation, 
-            imageUrl, 
-            audioUrl 
-        };
-        
-        set.cards.push(newCard);
-        saveSets(sets);
-        return newCard;
+    if (!set) {
+        throw new Error('Set not found');
     }
+
+    const cardId = Date.now().toString();
+    const imageUrl = image ? URL.createObjectURL(image) : undefined;
+    const audioUrl = audio ? URL.createObjectURL(audio) : undefined;
+    
+    const newCard: Card = {
+        id: cardId,
+        word,
+        translation,
+        imageUrl,
+        audioUrl
+    };
+    
+    set.cards.push(newCard);
+    saveSets(sets);
+    return newCard;
 };
-export const editFlashcardSet = (id: string, title: string, description: string, isPinned: boolean) => {
+
+export const editFlashcardSet = (
+    id: string, 
+    title: string, 
+    description: string, 
+    isPinned: boolean
+): FlashcardSet[] => {
     const sets = getFlashcardSets();
     const setIndex = sets.findIndex(set => set.id === id);
+    
     if (setIndex !== -1) {
-        sets[setIndex] = { ...sets[setIndex], title, description, isPinned };
+        sets[setIndex] = { 
+            ...sets[setIndex], 
+            title, 
+            description, 
+            isPinned 
+        };
         localStorage.setItem('flashcard_sets', JSON.stringify(sets));
     }
+    
     return sets;
 };
+
 
 // Добавляем новую функцию для редактирования карточки
 export const editCardInSet = (

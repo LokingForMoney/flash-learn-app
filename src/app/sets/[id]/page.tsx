@@ -69,15 +69,19 @@ export default function SetPage() {
     }
 
     const handleAddCard = (e: React.FormEvent) => {
-        e.preventDefault()
-        const newCardData = addCardToSet(id, newCard.word, newCard.translation, newCard.image, newCard.audio)
-        setSet(prev => ({
-            ...prev,
-            cards: [...prev.cards, newCardData]
-        }))
-        setNewCard({ word: '', translation: '', image: null, audio: null })
-        setShowForm(false)
-    }
+        e.preventDefault();
+        try {
+            const newCardData = addCardToSet(id, newCard.word, newCard.translation, newCard.image, newCard.audio);
+            setSet(prev => ({
+                ...prev,
+                cards: [...prev.cards, newCardData]
+            }));
+            setNewCard({ word: '', translation: '', image: null, audio: null });
+        } catch (error) {
+            console.error('Failed to add card:', error);
+        }
+    };
+    
 
     const handleEditCard = (cardId: string) => {
         const updatedCard = editCardInSet(id, cardId, newCard.word, newCard.translation, newCard.image, newCard.audio)
