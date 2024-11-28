@@ -216,10 +216,12 @@ import { useState } from 'react'
 import { getFlashcardSets, deleteFlashcardSet, togglePinSet, editFlashcardSet } from '@/lib/flashcardSetService'
 import Link from 'next/link'
 import CreateCards from '@/components/CreateCards'
+import { FlashcardSet } from '@/types/flashcard'
 
 export default function HomePage() {
     const [sets, setSets] = useState(getFlashcardSets())
-    const [editingSet, setEditingSet] = useState(null)
+    const [editingSet, setEditingSet] = useState<string | null>(null)
+
     const [editForm, setEditForm] = useState({
         title: '',
         description: '',
@@ -236,14 +238,15 @@ export default function HomePage() {
         setSets(getFlashcardSets())
     }
 
-    const startEditing = (set) => {
-        setEditingSet(set.id)
-        setEditForm({
-            title: set.title,
-            description: set.description,
-            isPinned: set.isPinned
-        })
-    }
+    const startEditing = (set: FlashcardSet) => {
+      setEditingSet(set.id)
+      setEditForm({
+          title: set.title,
+          description: set.description,
+          isPinned: set.isPinned
+      })
+  }
+  
 
     const handleEdit = (e: React.FormEvent) => {
         e.preventDefault()
