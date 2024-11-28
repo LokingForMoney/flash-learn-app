@@ -8,7 +8,12 @@ export default function GamePage() {
     const params = useParams()
     const router = useRouter()
     const [set] = useState(getFlashcardSet(params.id as string))
-    const [cards, setCards] = useState<any[]>([])
+    const [cards, setCards] = useState<Array<{
+        id: string;
+        content: string;
+        type: string;
+        pairId: string;
+    }>>([])
     const [selectedCards, setSelectedCards] = useState<number[]>([])
     const [matchedPairs, setMatchedPairs] = useState<number[]>([])
     const [stats, setStats] = useState({ correct: 0, incorrect: 0 })

@@ -13,7 +13,7 @@ export default function CreateSetPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        const setId = addFlashcardSet(formData.title, formData.description, formData.isPinned)
+        addFlashcardSet(formData.title, formData.description, formData.isPinned)
         router.push('/')
     }
 
