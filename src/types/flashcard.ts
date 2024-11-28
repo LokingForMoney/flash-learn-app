@@ -1,3 +1,8 @@
+export interface Flashcard {
+    question: string;
+    answer: string;
+}
+
 export interface Card {
     id: string;
     word: string;
