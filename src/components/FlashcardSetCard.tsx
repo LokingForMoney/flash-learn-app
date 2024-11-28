@@ -1,4 +1,4 @@
-import { FlashcardSet } from '@/types/flashcard-set'
+import { FlashcardSet } from '@/types/flashcard'
 import Link from 'next/link'
 
 export default function FlashcardSetCard({ set }: { set: FlashcardSet }) {

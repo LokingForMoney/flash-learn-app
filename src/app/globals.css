@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.telegram-app-viewport {
-  --tg-viewport-height: 100vh;
-  --tg-viewport-stable-height: 100vh;
+.backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.transform-style-preserve-3d {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+}
+
+.rotate-y-180 {
+    transform: rotateY(180deg);
 }
