@@ -15,3 +15,41 @@
 .rotate-y-180 {
     transform: rotateY(180deg);
 }
+:root {
+  --tg-theme-bg-color: var(--background);
+  --tg-theme-text-color: var(--foreground);
+  --tg-theme-hint-color: #999999;
+  --tg-theme-link-color: #2481cc;
+  --tg-theme-button-color: #2481cc;
+  --tg-theme-button-text-color: #ffffff;
+}
+
+body {
+  background: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+.container {
+  max-width: 100%;
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .grid {
+      grid-template-columns: 1fr;
+  }
+  
+  .card {
+      margin-bottom: 1rem;
+  }
+  
+  button, a {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+  }
+}

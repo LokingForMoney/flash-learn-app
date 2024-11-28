@@ -349,12 +349,18 @@ export default function HomePage() {
                                     >
                                         Открыть
                                     </Link>
-                                    <Link
-                                        href={`/game/${set.id}`}
-                                        className="p-2 rounded bg-purple-100 hover:bg-purple-200"
-                                    >
-                                        Играть
-                                    </Link>
+                                    {set.cards.length > 0 ? (
+                                      <Link
+                                          href={`/game/${set.id}`}
+                                          className="p-2 rounded bg-purple-100 hover:bg-purple-200"
+                                      >
+                                          Играть ({set.cards.length})
+                                      </Link>
+                                  ) : (
+                                      <span className="p-2 rounded bg-gray-100 text-gray-500">
+                                          Добавьте карточки
+                                      </span>
+                                  )}
                                 </div>
                             </div>
                         )}
