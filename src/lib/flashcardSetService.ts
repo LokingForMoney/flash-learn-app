@@ -1,4 +1,4 @@
-import { FlashcardSet} from '@/types/flashcard';
+import { Card, FlashcardSet } from '@/types/flashcard';
 
 const STORAGE_KEY = 'flashcard_sets';
 
