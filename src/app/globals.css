@@ -6,7 +6,9 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 }
-
+.transition-opacity {
+  transition: opacity 0.3s ease-in-out;
+}
 .transform-style-preserve-3d {
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
